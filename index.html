@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="auto">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Md. Safwan Zaher Asif — Security &amp; Distributed Systems</title>
+<meta name="description" content="Md. Safwan Zaher Asif — Lecturer, Dept. of CSE, Southeast University. Research in agentic AI security, LLM guardrails, backdoor defenses, and distributed systems.">
+<meta property="og:title" content="Md. Safwan Zaher Asif">
+<meta property="og:description" content="Agentic AI Security · LLM Guardrails · Distributed Systems">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#ffffff; --surface:#f6f8fa; --ink:#0f1115; --ink-soft:#3d444e;
+  --ink-faint:#6e7681; --rule:#dde2e8; --accent:#16477c; --accent-soft:#eaf0f7;
+  --ok:#1a7f4b; --warn:#9a5b00;
+  --rail:17rem; --max:44rem;
+}
+html[data-theme="dark"]{
+  --bg:#0d1117; --surface:#161b22; --ink:#e6edf3; --ink-soft:#afb8c3;
+  --ink-faint:#7d8590; --rule:#242b34; --accent:#79b8ff; --accent-soft:#111a26;
+  --ok:#56d364; --warn:#e3b341;
+}
+@media (prefers-color-scheme:dark){
+  html[data-theme="auto"]{
+    --bg:#0d1117; --surface:#161b22; --ink:#e6edf3; --ink-soft:#afb8c3;
+    --ink-faint:#7d8590; --rule:#242b34; --accent:#79b8ff; --accent-soft:#111a26;
+    --ok:#56d364; --warn:#e3b341;
+  }
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:2rem;-webkit-text-size-adjust:100%}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;
+  font-size:1rem;line-height:1.6;
+  transition:background .25s,color .25s;
+}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid transparent}
+a:hover{border-bottom-color:var(--accent)}
+code,kbd{font-family:"IBM Plex Mono",ui-monospace,monospace;font-size:.85em}
+
+/* progress + skip */
+#bar{position:fixed;top:0;left:0;height:2px;width:0;background:var(--accent);z-index:60;transition:width .08s linear}
+.skip{position:absolute;left:-9999px;background:var(--accent);color:#fff;padding:.6rem 1rem;z-index:70}
+.skip:focus{left:.5rem;top:.5rem}
+
+/* layout */
+.shell{display:grid;grid-template-columns:var(--rail) minmax(0,var(--max));gap:4rem;max-width:68rem;margin:0 auto;padding:3rem 2rem 0}
+.rail{position:sticky;top:3rem;align-self:start;height:max-content}
+
+/* rail */
+.portrait{width:5.5rem;height:5.5rem;border-radius:50%;object-fit:cover;display:block;background:var(--surface);border:1px solid var(--rule)}
+.ph{display:flex;align-items:center;justify-content:center;font-size:.58rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);text-align:center;padding:.4rem}
+.rail h1{font-family:"IBM Plex Serif",Georgia,serif;font-size:1.3rem;line-height:1.25;margin:1rem 0 .3rem;font-weight:600;letter-spacing:-.01em}
+.rail .role{font-size:.82rem;color:var(--ink-soft);line-height:1.5;margin:0 0 .9rem}
+.rail .role b{color:var(--ink);font-weight:600}
+.social{display:flex;gap:.6rem;flex-wrap:wrap;font-size:.78rem;margin:0 0 1.4rem;padding:0;list-style:none}
+.social a{color:var(--ink-soft);border:1px solid var(--rule);border-radius:3px;padding:.2rem .5rem}
+.social a:hover{color:var(--accent);border-color:var(--accent)}
+
+nav.toc{border-top:1px solid var(--rule);padding-top:.9rem}
+nav.toc a{display:block;font-size:.82rem;color:var(--ink-faint);padding:.3rem 0 .3rem .7rem;border-left:2px solid var(--rule);border-bottom:0;transition:color .15s,border-color .15s}
+nav.toc a:hover{color:var(--ink)}
+nav.toc a[aria-current="true"]{color:var(--accent);border-left-color:var(--accent);font-weight:500}
+
+.railfoot{margin-top:1.4rem;padding-top:1rem;border-top:1px solid var(--rule);display:flex;align-items:center;gap:.5rem;flex-wrap:wrap}
+button{font:inherit;color:inherit;cursor:pointer;background:none;border:0}
+.ghost{background:none;border:1px solid var(--rule);color:var(--ink-soft);border-radius:3px;padding:.3rem .6rem;font-size:.75rem;transition:border-color .15s,color .15s}
+.ghost:hover{border-color:var(--accent);color:var(--accent)}
+.ghost[aria-pressed="true"]{border-color:var(--accent);color:var(--accent);background:var(--accent-soft)}
+
+/* sections */
+section{padding:0 0 3.25rem;scroll-margin-top:2rem}
+h2{font-size:.76rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);
+   margin:0 0 1.25rem;padding-bottom:.5rem;border-bottom:2px solid var(--ink);display:flex;justify-content:space-between;align-items:baseline;gap:1rem}
+h2 .count{font-weight:400;letter-spacing:.02em;text-transform:none;font-size:.74rem}
+h3{font-size:1.02rem;font-weight:600;margin:0;line-height:1.4}
+p{margin:0 0 .9rem}p:last-child{margin-bottom:0}
+ul{margin:0 0 .9rem;padding-left:1.1rem}li{margin-bottom:.35rem}
+li::marker{color:var(--ink-faint)}
+.meta{font-size:.78rem;color:var(--ink-faint)}
+em.k{font-style:italic}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(10px);transition:opacity .5s ease,transform .5s ease}
+.rv.in{opacity:1;transform:none}
+
+/* filter chips */
+.filters{display:flex;gap:.4rem;flex-wrap:wrap;margin:0 0 1.25rem}
+.chip{background:none;border:1px solid var(--rule);color:var(--ink-soft);border-radius:999px;padding:.22rem .7rem;font-size:.75rem;transition:all .15s}
+.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:var(--bg)}
+.hidden{display:none!important}
+.empty{font-size:.85rem;color:var(--ink-faint);font-style:italic}
+
+/* accordion research entries */
+.acc{border:1px solid var(--rule);border-radius:4px;margin-bottom:.7rem;background:var(--bg);transition:border-color .15s}
+.acc:hover{border-color:var(--ink-faint)}
+.acc-head{width:100%;background:none;border:0;color:var(--ink);text-align:left;padding:.95rem 1.05rem;display:grid;grid-template-columns:1fr auto;gap:.3rem 1rem;align-items:baseline}
+.acc-head h3{color:var(--ink)}
+.acc-head:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.acc-head .yr{font-size:.76rem;color:var(--ink-faint);white-space:nowrap}
+.acc-head .q{grid-column:1/-1;font-family:"IBM Plex Serif",Georgia,serif;font-style:italic;font-size:.9rem;color:var(--ink-soft);margin-top:.3rem}
+.acc-head::after{content:"";grid-column:1/-1;font-size:.72rem;color:var(--accent);margin-top:.5rem}
+.acc-head[aria-expanded="false"]::after{content:"Show details  +"}
+.acc-head[aria-expanded="true"]::after{content:"Hide details  −"}
+.acc-body{padding:0 1.05rem;max-height:0;overflow:hidden;transition:max-height .32s ease,padding .32s ease}
+.acc-body.open{max-height:60rem;padding:0 1.05rem 1.05rem}
+.acc-body .where{font-size:.78rem;color:var(--ink-faint);margin:0 0 .7rem}
+
+.tags{display:flex;flex-wrap:wrap;gap:.35rem;margin:.8rem 0 0;padding:0;list-style:none}
+.tags li{margin:0;font-size:.7rem;letter-spacing:.02em;border:1px solid var(--rule);color:var(--ink-faint);padding:.15rem .45rem;border-radius:2px}
+
+/* news */
+.news{list-style:none;margin:0;padding:0}
+.news li{display:grid;grid-template-columns:5.5rem 1fr;gap:1rem;padding:.6rem 0;border-bottom:1px dotted var(--rule);font-size:.93rem}
+.news li:last-child{border-bottom:0}
+.news time{font-family:"IBM Plex Mono",monospace;font-size:.76rem;color:var(--ink-faint);padding-top:.15rem}
+
+/* publications */
+.pub{padding:.9rem 0;border-bottom:1px dotted var(--rule)}
+.pub:last-child{border-bottom:0}
+.pub .cite{font-size:.95rem;margin:0 0 .5rem}
+.pub .cite em{font-style:italic}
+.pub .row{display:flex;gap:.45rem;flex-wrap:wrap;align-items:center}
+.status{font-size:.66rem;letter-spacing:.07em;text-transform:uppercase;border:1px solid var(--rule);color:var(--ink-faint);padding:.12rem .4rem;border-radius:2px}
+.status.rev{color:var(--warn);border-color:var(--warn)}
+.status.pub{color:var(--ok);border-color:var(--ok)}
+.tiny{background:none;border:1px solid var(--rule);color:var(--ink-soft);border-radius:3px;padding:.12rem .45rem;font-size:.7rem}
+.tiny:hover{border-color:var(--accent);color:var(--accent)}
+pre.bib{display:none;background:var(--surface);border:1px solid var(--rule);border-radius:3px;padding:.8rem;font-family:"IBM Plex Mono",monospace;font-size:.72rem;line-height:1.5;overflow-x:auto;margin:.6rem 0 0;white-space:pre}
+pre.bib.open{display:block}
+
+/* timeline */
+.tl{list-style:none;margin:0;padding:0 0 0 1.1rem;border-left:2px solid var(--rule)}
+.tl li{position:relative;padding:0 0 1.3rem .3rem}
+.tl li:last-child{padding-bottom:0}
+.tl li::before{content:"";position:absolute;left:-1.45rem;top:.45rem;width:.55rem;height:.55rem;border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+.tl .yr{font-size:.76rem;color:var(--ink-faint);display:block;margin-bottom:.1rem}
+
+/* skills */
+.skill{display:grid;grid-template-columns:9rem 1fr;gap:.7rem;padding:.45rem 0;border-bottom:1px dotted var(--rule);font-size:.93rem}
+.skill:last-child{border-bottom:0}
+.skill dt{font-size:.78rem;color:var(--ink-faint);padding-top:.1rem}
+dl,dd{margin:0}
+
+/* projects */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(14rem,1fr));gap:.8rem}
+.card{border:1px solid var(--rule);border-radius:4px;padding:.9rem;transition:transform .18s,border-color .18s}
+.card:hover{transform:translateY(-2px);border-color:var(--accent)}
+.card h3{font-size:.95rem;margin-bottom:.3rem}
+.card p{font-size:.86rem;margin-bottom:.5rem}
+
+footer{border-top:1px solid var(--rule);margin-top:1rem;padding:1.5rem 0 3rem;font-size:.78rem;color:var(--ink-faint)}
+.kbd{border:1px solid var(--rule);border-radius:3px;padding:.05rem .3rem;font-size:.72rem;font-family:"IBM Plex Mono",monospace;color:var(--ink-soft)}
+
+/* mobile */
+@media (max-width:62rem){
+  .shell{grid-template-columns:1fr;gap:2rem;padding:1.75rem 1.25rem 0;max-width:46rem}
+  .rail{position:static}
+  nav.toc{display:flex;gap:.3rem;overflow-x:auto;padding-top:.8rem;-webkit-overflow-scrolling:touch}
+  nav.toc a{white-space:nowrap;border-left:0;border-bottom:2px solid var(--rule);padding:.3rem .55rem}
+  nav.toc a[aria-current="true"]{border-left:0;border-bottom-color:var(--accent)}
+  .rail h1{font-size:1.5rem}
+}
+</style>
+</head>
+<body>
+<div id="bar" aria-hidden="true"></div>
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="shell">
+
+  <!-- ================= RAIL ================= -->
+  <aside class="rail">
+    <img class="portrait" src="photo.jpg" alt="Md. Safwan Zaher Asif">
+    <h1>Md. Safwan Zaher Asif</h1>
+    <p class="role">
+      Lecturer, Dept. of CSE<br>
+      <b>Southeast University</b>, Dhaka<br>
+      Graduate researcher (remote), <b>Arizona State University</b>
+    </p>
+    <ul class="social">
+      <li><a href="mailto:safwan.zaherasif@seu.edu.bd">Email</a></li>
+      <li><a href="https://github.com/safwan-zaher">GitHub</a></li>
+      <li><a href="https://linkedin.com/in/safwanzaher123">LinkedIn</a></li>
+      <li><a href="cv.pdf">CV</a></li>
+    </ul>
+    <nav class="toc" aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#news">News</a>
+      <a href="#research">Research</a>
+      <a href="#publications">Publications</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <div class="railfoot">
+      <button class="ghost" id="theme" aria-label="Switch colour theme">◐ Theme</button>
+      <button class="ghost" id="expandAll" aria-pressed="false">Expand all</button>
+    </div>
+  </aside>
+
+  <!-- ================= MAIN ================= -->
+  <main id="main">
+
+    <section id="about" class="rv">
+      <h2>About</h2>
+      <p>I work on the security of systems that get deployed faster than they get understood. Three questions occupy me right now: whether agentic AI tools behave the way they declare they will, whether deployable LLM guardrails survive multi-turn attacks in a low-resource language, and whether cheap backdoor defenses defend anything once you hold clean accuracy fixed.</p>
+      <p>Before security I built distributed query-processing systems. My undergraduate thesis on top-<em class="k">k</em> dominating queries over uncertain databases was published at IEEE ICCIT 2025. I am applying to PhD programs for Fall 2027.</p>
+      <ul class="tags">
+        <li>Agentic AI Security</li><li>Software Supply Chain Security</li><li>Adversarial ML</li>
+        <li>LLM Guardrails</li><li>Backdoor Attacks &amp; Defenses</li><li>Network Security</li>
+        <li>Distributed Systems</li><li>Big Data</li>
+      </ul>
+    </section>
+
+    <section id="news" class="rv">
+      <h2>News</h2>
+      <ul class="news">
+        <li><time datetime="2026-11">Nov 2026</time><span>IELTS Academic — overall band 7.5.</span></li>
+        <li><time datetime="2026-09">Sep 2026</time><span>Backdoor-defense evaluation submitted to <a href="https://iceeict.org/">IEEE ICEEICT 2027</a>, MIST Dhaka.</span></li>
+        <li><time datetime="2026-02">Feb 2026</time><span>Joined Southeast University as Lecturer; now supervising two undergraduate security research groups.</span></li>
+        <li><time datetime="2025-12">Dec 2025</time><span>Presented at <a href="https://doi.org/10.1109/ICCIT68739.2025.11490166">IEEE ICCIT 2025</a>, Cox’s Bazar.</span></li>
+        <li><time datetime="2025-08">Aug 2025</time><span>Started as Lecturer at Dhaka International University; co-organised BIM 2025.</span></li>
+      </ul>
+    </section>
+
+    <section id="research" class="rv">
+      <h2>Research <span class="count" data-count="research"></span></h2>
+      <div class="filters" data-filter="research" role="group" aria-label="Filter research by area">
+        <button class="chip" data-tag="all" aria-pressed="true">All</button>
+        <button class="chip" data-tag="agentic" aria-pressed="false">Agentic AI</button>
+        <button class="chip" data-tag="llm" aria-pressed="false">LLM Safety</button>
+        <button class="chip" data-tag="backdoor" aria-pressed="false">Backdoors</button>
+        <button class="chip" data-tag="dist" aria-pressed="false">Distributed Systems</button>
+      </div>
+
+      <div class="acc" data-item="research" data-tags="agentic">
+        <button class="acc-head" aria-expanded="false">
+          <h3>Behavioral conformance of agentic AI tools</h3>
+          <span class="yr">2026 – present</span>
+          <span class="q">Do agentic tools actually behave the way they declare?</span>
+        </button>
+        <div class="acc-body">
+          <p class="where">Graduate research (remote) · Mentor: Dr. Ozgur Ozmen, SCAI, Arizona State University</p>
+          <p>Pre-deployment behavioral vetting of agentic artifacts — agent skills and MCP servers — checked against the capabilities they declare. The gap between declaration and behaviour is where supply-chain risk enters an agent stack.</p>
+          <p>Project complete; paper in preparation for submission.</p>
+          <ul class="tags"><li>Agentic AI</li><li>Supply Chain Security</li><li>MCP</li></ul>
+        </div>
+      </div>
+
+      <div class="acc" data-item="research" data-tags="llm">
+        <button class="acc-head" aria-expanded="false">
+          <h3>Multi-turn jailbreak robustness of LLM guardrails in Bangla</h3>
+          <span class="yr">2026 – present</span>
+          <span class="q">Do deployable guardrails fail against multi-turn, code-mixed Bangla–English jailbreaks, and at which turn does detection break?</span>
+        </button>
+        <div class="acc-body">
+          <p class="where">Dept. of CSE, Southeast University · with undergraduate researchers I supervise</p>
+          <ul>
+            <li>Built a native Bangla/Banglish multi-turn dataset with turn-level harm labels, hard benign controls, and dual annotation; removed a refusal-text leak that had let a keyword baseline match a fine-tuned guard.</li>
+            <li>Benchmarked four deployable guardrails — Llama Guard 3, ShieldGemma, WildGuard, and an LLM-judge baseline. All score 95–100% in English and degrade sharply in Bangla, with a further drop when the guard reads the full conversation rather than only the final turn.</li>
+            <li>Dataset expansion and manuscript in progress; targeting ACL/EMNLP or NeurIPS Datasets &amp; Benchmarks.</li>
+          </ul>
+          <ul class="tags"><li>LLM Safety</li><li>Guardrails</li><li>Low-resource NLP</li><li>Red-teaming</li></ul>
+        </div>
+      </div>
+
+      <div class="acc" data-item="research" data-tags="backdoor">
+        <button class="acc-head" aria-expanded="false">
+          <h3>Cheap input-preprocessing defenses against stealthy backdoors</h3>
+          <span class="yr">2026 – present</span>
+          <span class="q">Can no-retraining input filters stop frequency-domain and warping triggers without destroying clean accuracy?</span>
+        </button>
+        <div class="acc-body">
+          <p class="where">Dept. of CSE, Southeast University · with undergraduate researchers I supervise</p>
+          <ul>
+            <li>Benchmarked ten preprocessing filters across 55 configurations on a ResNet-18 CIFAR-10 classifier backdoored by BadNets, Blended, WaNet, and FIBA.</li>
+            <li>Attack-success reduction turns out not to be evidence that a filter works: eight of ten filters cut stealthy-attack ASR by over 20 points, but each cost more than 5 points of clean accuracy.</li>
+            <li>Proposed a clean-accuracy viability floor as a reporting standard for this class of defense. Under review at IEEE ICEEICT 2027.</li>
+          </ul>
+          <ul class="tags"><li>Backdoor Defense</li><li>Adversarial ML</li><li>Computer Vision</li></ul>
+        </div>
+      </div>
+
+      <div class="acc" data-item="research" data-tags="dist">
+        <button class="acc-head" aria-expanded="false">
+          <h3>Distributed top-<em class="k">k</em> dominating queries over uncertain databases</h3>
+          <span class="yr">2024 – 2025</span>
+          <span class="q">How do you make probabilistic top-k dominating queries scale on commodity clusters?</span>
+        </button>
+        <div class="acc-body">
+          <p class="where">Undergraduate thesis · Supervisor: Dr. K.M. Azharul Hasan, Professor, Dept. of CSE, KUET</p>
+          <ul>
+            <li>Designed and implemented a distributed MapReduce framework for probabilistic top-<em class="k">k</em> dominating query processing over large-scale uncertain databases on Apache Hadoop and HDFS.</li>
+            <li>Improved query scalability on distributed clusters; published at IEEE ICCIT 2025.</li>
+          </ul>
+          <ul class="tags"><li>Hadoop</li><li>MapReduce</li><li>Uncertain Databases</li><li>Java</li></ul>
+        </div>
+      </div>
+      <p class="empty hidden" data-empty="research">Nothing in this area yet.</p>
+    </section>
+
+    <section id="publications" class="rv">
+      <h2>Publications <span class="count" data-count="pubs"></span></h2>
+      <div class="filters" data-filter="pubs" role="group" aria-label="Filter publications by status">
+        <button class="chip" data-tag="all" aria-pressed="true">All</button>
+        <button class="chip" data-tag="published" aria-pressed="false">Published</button>
+        <button class="chip" data-tag="review" aria-pressed="false">Under review</button>
+        <button class="chip" data-tag="prep" aria-pressed="false">In preparation</button>
+      </div>
+
+      <div class="pub" data-item="pubs" data-tags="published">
+        <p class="cite"><b>Md. Safwan Zaher Asif</b> and K.M. Azharul Hasan. “An Efficient Distributed Framework for Top-k Dominating Query Over Uncertain Databases.” <em>28th International Conference on Computer and Information Technology (ICCIT 2025)</em>, Cox’s Bazar, Bangladesh, December 2025. IEEE.</p>
+        <div class="row">
+          <span class="status pub">Published</span>
+          <a class="tiny" href="https://doi.org/10.1109/ICCIT68739.2025.11490166">DOI</a>
+          <button class="tiny" data-bib="bib1">BibTeX</button>
+        </div>
+<pre class="bib" id="bib1">@inproceedings{asif2025topk,
+  author    = {Asif, Md. Safwan Zaher and Hasan, K. M. Azharul},
+  title     = {An Efficient Distributed Framework for Top-k Dominating
+               Query Over Uncertain Databases},
+  booktitle = {28th International Conference on Computer and
+               Information Technology (ICCIT)},
+  year      = {2025},
+  address   = {Cox's Bazar, Bangladesh},
+  publisher = {IEEE},
+  doi       = {10.1109/ICCIT68739.2025.11490166}
+}</pre>
+      </div>
+
+      <div class="pub" data-item="pubs" data-tags="review">
+        <p class="cite"><b>Md. Safwan Zaher Asif</b>, Md. Tasinur Rahman, and Abed Hossain Chowdhury. “Lower Attack Success Is Not a Viable Defense: Evaluating Input Preprocessing Against Backdoors.” Submitted to <em>7th International Conference on Electrical Engineering and Information &amp; Communication Technology (ICEEICT 2027)</em>, MIST, Dhaka, January 2027. IEEE.</p>
+        <div class="row"><span class="status rev">Under review</span></div>
+      </div>
+
+      <div class="pub" data-item="pubs" data-tags="prep">
+        <p class="cite"><b>Md. Safwan Zaher Asif</b> and Ozgur Ozmen. Behavioral conformance of agentic AI tools. Arizona State University.</p>
+        <div class="row"><span class="status">In preparation</span></div>
+      </div>
+
+      <div class="pub" data-item="pubs" data-tags="prep">
+        <p class="cite"><b>Md. Safwan Zaher Asif</b> et al. Multi-turn jailbreak robustness of deployable LLM guardrails in Bangla and code-mixed Bangla–English.</p>
+        <div class="row"><span class="status">In preparation</span></div>
+      </div>
+      <p class="empty hidden" data-empty="pubs">Nothing in this category yet.</p>
+    </section>
+
+    <section id="experience" class="rv">
+      <h2>Experience &amp; Education</h2>
+      <ul class="tl">
+        <li>
+          <span class="yr">Feb 2026 – present</span>
+          <h3>Lecturer — Southeast University, Dhaka</h3>
+          <p class="meta">Computer Networks · Introduction to Programming Language II (Java) · Module Leader for the Java course · supervising two undergraduate security research groups.</p>
+        </li>
+        <li>
+          <span class="yr">Aug 2025 – Jan 2026</span>
+          <h3>Lecturer — Dhaka International University, Dhaka</h3>
+          <p class="meta">Computer Networks · Computer &amp; Cyber Security · Distributed &amp; Parallel Processing. Co-organiser, 3rd International Conference on Big Data, IoT and Machine Learning (BIM 2025).</p>
+        </li>
+        <li>
+          <span class="yr">2020 – 2025</span>
+          <h3>B.Sc. (Engg.) in Computer Science and Engineering</h3>
+          <p class="meta">Khulna University of Engineering &amp; Technology (KUET) · CGPA 3.80 / 4.00 · Graduated with Honors · Dean’s Award 2021, 2022, 2023.</p>
+        </li>
+      </ul>
+    </section>
+
+    <section id="projects" class="rv">
+      <h2>Projects <span class="count" data-count="proj"></span></h2>
+      <div class="filters" data-filter="proj" role="group" aria-label="Filter projects by area">
+        <button class="chip" data-tag="all" aria-pressed="true">All</button>
+        <button class="chip" data-tag="ml" aria-pressed="false">ML / CV</button>
+        <button class="chip" data-tag="web" aria-pressed="false">Web &amp; Mobile</button>
+        <button class="chip" data-tag="sys" aria-pressed="false">Systems</button>
+      </div>
+      <div class="cards">
+        <div class="card" data-item="proj" data-tags="ml">
+          <h3>Bone Fracture Detection</h3>
+          <p>Fracture detection from X-ray images.</p>
+          <p class="meta">Python · TensorFlow · Keras · OpenCV<br><a href="https://github.com/safwan-zaher/Bone-Fracture-Detection">Code →</a></p>
+        </div>
+        <div class="card" data-item="proj" data-tags="ml">
+          <h3>Sound Censor</h3>
+          <p>Automated profanity filtering in video via speech recognition.</p>
+          <p class="meta">Python · Whisper · FFmpeg<br><a href="https://github.com/safwan-zaher/SOUND-CENSOR-automated-slang-detection-for-profanity-filtering-in-videos">Code →</a></p>
+        </div>
+        <div class="card" data-item="proj" data-tags="web">
+          <h3>PureConnect (iOS)</h3>
+          <p>Social platform with friend graph and live news feed.</p>
+          <p class="meta">Swift · Firebase · News API<br><a href="https://github.com/safwan-zaher/PureConnect-A-Social-Media-Platform">Code →</a></p>
+        </div>
+        <div class="card" data-item="proj" data-tags="web">
+          <h3>ChosmaKini</h3>
+          <p>E-commerce web application for eyewear.</p>
+          <p class="meta">PHP · Laravel · MySQL<br><a href="https://github.com/safwan-zaher/ChosmaKini-An-E-commerce-website-using-laravel">Code →</a></p>
+        </div>
+        <div class="card" data-item="proj" data-tags="sys">
+          <h3>Abalone Game AI</h3>
+          <p>Two-player strategy game with a search-based opponent.</p>
+          <p class="meta">Python · Pygame<br><a href="https://github.com/safwan-zaher/Abalone-Game">Code →</a></p>
+        </div>
+        <div class="card" data-item="proj" data-tags="sys">
+          <h3>Compiler Project</h3>
+          <p>Lexing, parsing, and code generation for a small language.</p>
+          <p class="meta">C/C++ · Bison · Flex<br><a href="https://github.com/safwan-zaher/Compiler-Project">Code →</a></p>
+        </div>
+      </div>
+      <p class="empty hidden" data-empty="proj">Nothing in this area yet.</p>
+    </section>
+
+    <section id="skills" class="rv">
+      <h2>Technical Skills</h2>
+      <dl>
+        <div class="skill"><dt>Languages</dt><dd>C, C++, Python, Java, SQL, JavaScript</dd></div>
+        <div class="skill"><dt>Big data</dt><dd>Hadoop, MapReduce, Apache HDFS</dd></div>
+        <div class="skill"><dt>Databases</dt><dd>MySQL, Oracle, Firebase</dd></div>
+        <div class="skill"><dt>ML &amp; frameworks</dt><dd>TensorFlow, Keras, OpenCV, Laravel</dd></div>
+        <div class="skill"><dt>Mobile &amp; web</dt><dd>Android (Java), iOS (Swift), HTML, CSS</dd></div>
+        <div class="skill"><dt>Tools</dt><dd>Git, OpenGL, LaTeX</dd></div>
+      </dl>
+      <p class="meta" style="margin-top:1rem">Service: Student Mentor, Student Square (2023–2025) · Organising Secretary, Remians’ Association of KUET (2024–2025) · Organiser, BitFest 2025 · 500+ competitive-programming problems solved.</p>
+    </section>
+
+    <section id="contact" class="rv">
+      <h2>Contact</h2>
+      <p>I am applying to PhD programs for Fall 2027 in security, distributed systems, and databases. If my work overlaps with yours, I would be glad to hear from you.</p>
+      <p class="meta">
+        <a href="mailto:safwan.zaherasif@seu.edu.bd">safwan.zaherasif@seu.edu.bd</a> ·
+        <a href="https://github.com/safwan-zaher">github.com/safwan-zaher</a> ·
+        <a href="https://linkedin.com/in/safwanzaher123">linkedin.com/in/safwanzaher123</a> ·
+        <a href="cv.pdf">CV (PDF)</a>
+      </p>
+      <footer>
+        <p>© 2026 Md. Safwan Zaher Asif · Dhaka, Bangladesh · Press <span class="kbd">t</span> to switch theme, <span class="kbd">e</span> to expand all.</p>
+      </footer>
+    </section>
+
+  </main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var d=document;
+
+  /* ---------- theme (persisted, graceful if storage blocked) ---------- */
+  var root=d.documentElement, order=["auto","light","dark"];
+  try{var s=localStorage.getItem("theme"); if(s&&order.indexOf(s)>-1) root.setAttribute("data-theme",s);}catch(e){}
+  function label(){
+    var t=root.getAttribute("data-theme");
+    d.getElementById("theme").textContent=(t==="light"?"☀ Light":t==="dark"?"☾ Dark":"◐ Auto");
+  }
+  function cycleTheme(){
+    var i=order.indexOf(root.getAttribute("data-theme"));
+    var next=order[(i+1)%order.length];
+    root.setAttribute("data-theme",next);
+    try{localStorage.setItem("theme",next);}catch(e){}
+    label();
+  }
+  d.getElementById("theme").addEventListener("click",cycleTheme);
+  label();
+
+  /* ---------- scroll progress ---------- */
+  var bar=d.getElementById("bar"),ticking=false;
+  function progress(){
+    var h=d.documentElement.scrollHeight-window.innerHeight;
+    bar.style.width=(h>0?(window.scrollY/h)*100:0)+"%";
+    ticking=false;
+  }
+  window.addEventListener("scroll",function(){ if(!ticking){ticking=true;requestAnimationFrame(progress);} },{passive:true});
+  progress();
+
+  /* ---------- scroll-spy nav ---------- */
+  var links=[].slice.call(d.querySelectorAll("nav.toc a"));
+  var secs=links.map(function(a){return d.querySelector(a.getAttribute("href"));}).filter(Boolean);
+  function spy(){
+    var best=null,bestTop=-1e9;
+    secs.forEach(function(sec){
+      var t=sec.getBoundingClientRect().top-90;
+      if(t<=0&&t>bestTop){bestTop=t;best=sec;}
+    });
+    if(!best)best=secs[0];
+    links.forEach(function(a){
+      a.setAttribute("aria-current",a.getAttribute("href")==="#"+best.id?"true":"false");
+    });
+  }
+  window.addEventListener("scroll",spy,{passive:true});
+  window.addEventListener("resize",spy);
+  spy();
+
+  /* ---------- reveal on scroll ---------- */
+  var reduce=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var rvs=[].slice.call(d.querySelectorAll(".rv"));
+  if(reduce||!("IntersectionObserver" in window)){
+    rvs.forEach(function(el){el.classList.add("in");});
+  }else{
+    var io=new IntersectionObserver(function(es){
+      es.forEach(function(en){ if(en.isIntersecting){en.target.classList.add("in");io.unobserve(en.target);} });
+    },{rootMargin:"0px 0px -8% 0px",threshold:.05});
+    rvs.forEach(function(el){io.observe(el);});
+  }
+
+  /* ---------- accordions ---------- */
+  var heads=[].slice.call(d.querySelectorAll(".acc-head"));
+  function setOpen(head,open){
+    head.setAttribute("aria-expanded",open?"true":"false");
+    head.nextElementSibling.classList.toggle("open",open);
+  }
+  heads.forEach(function(h){
+    h.addEventListener("click",function(){ setOpen(h,h.getAttribute("aria-expanded")!=="true"); });
+  });
+  var exp=d.getElementById("expandAll");
+  function toggleAll(){
+    var open=exp.getAttribute("aria-pressed")!=="true";
+    exp.setAttribute("aria-pressed",open?"true":"false");
+    exp.textContent=open?"Collapse all":"Expand all";
+    heads.forEach(function(h){ if(!h.closest(".hidden")) setOpen(h,open); });
+  }
+  exp.addEventListener("click",toggleAll);
+
+  /* ---------- filters ---------- */
+  function applyFilter(group,tag){
+    var items=[].slice.call(d.querySelectorAll('[data-item="'+group+'"]')),shown=0;
+    items.forEach(function(el){
+      var match=tag==="all"||(" "+el.dataset.tags+" ").indexOf(" "+tag+" ")>-1;
+      el.classList.toggle("hidden",!match);
+      if(match)shown++;
+    });
+    var empty=d.querySelector('[data-empty="'+group+'"]');
+    if(empty)empty.classList.toggle("hidden",shown>0);
+    var c=d.querySelector('[data-count="'+group+'"]');
+    if(c)c.textContent=shown+(tag==="all"?" total":" shown");
+  }
+  [].slice.call(d.querySelectorAll(".filters")).forEach(function(box){
+    var group=box.dataset.filter;
+    box.addEventListener("click",function(ev){
+      var btn=ev.target.closest(".chip"); if(!btn)return;
+      [].slice.call(box.querySelectorAll(".chip")).forEach(function(b){
+        b.setAttribute("aria-pressed",b===btn?"true":"false");
+      });
+      applyFilter(group,btn.dataset.tag);
+    });
+    applyFilter(group,"all");
+  });
+
+  /* ---------- bibtex ---------- */
+  d.addEventListener("click",function(ev){
+    var btn=ev.target.closest("[data-bib]"); if(!btn)return;
+    var pre=d.getElementById(btn.dataset.bib);
+    var open=pre.classList.toggle("open");
+    btn.textContent=open?"Hide BibTeX":"BibTeX";
+    if(open&&navigator.clipboard){
+      navigator.clipboard.writeText(pre.textContent).then(function(){
+        var old=btn.textContent;btn.textContent="Copied ✓";
+        setTimeout(function(){btn.textContent=old;},1400);
+      },function(){});
+    }
+  });
+
+  /* ---------- keyboard ---------- */
+  d.addEventListener("keydown",function(ev){
+    if(ev.metaKey||ev.ctrlKey||ev.altKey)return;
+    var t=ev.target.tagName;
+    if(t==="INPUT"||t==="TEXTAREA"||ev.target.isContentEditable)return;
+    if(ev.key==="t"){cycleTheme();}
+    if(ev.key==="e"){toggleAll();}
+  });
+})();
+</script>
+</body>
+</html>
